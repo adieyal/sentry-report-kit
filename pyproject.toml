@@ -1,0 +1,69 @@
+[project]
+name = "sentry-report-kit"
+version = "0.1.0"
+description = "Generate and render Sentry issue report payloads"
+readme = "README.md"
+authors = [
+    { name = "Adi Eyal", email = "adi@clearforest.io" }
+]
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = []
+keywords = ["sentry", "reporting", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/<your-org>/sentry-report-kit"
+Repository = "https://github.com/<your-org>/sentry-report-kit"
+Issues = "https://github.com/<your-org>/sentry-report-kit/issues"
+
+[project.scripts]
+sentry-report-kit = "sentry_report_kit.cli:main"
+
+[build-system]
+requires = ["hatchling>=1.26.3"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sentry_report_kit"]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "pre-commit>=3.8.0",
+    "pytest>=8.3.5",
+    "ruff>=0.11.0",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "PL", "RUF"]
+ignore = ["PLR2004"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+pretty = true
+mypy_path = ["src"]
+
