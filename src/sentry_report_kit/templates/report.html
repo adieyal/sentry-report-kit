@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sentry Report</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; background: #0b1020; color: #f8fafc; }
+    h1, h2 { margin: 0 0 0.5rem; }
+    .muted { color: #cbd5e1; }
+    .card { background: #111827; border: 1px solid #334155; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid #334155; padding: 0.5rem; text-align: left; }
+    a { color: #60a5fa; }
+    code { color: #fca5a5; }
+  </style>
+</head>
+<body>
+  <h1>Sentry Report</h1>
+  <p class="muted" id="meta"></p>
+
+  <div class="card">
+    <h2>Summary</h2>
+    <p id="hero"></p>
+  </div>
+
+  <div class="card">
+    <h2>Top Issues</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Sentry Code</th>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Events</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody id="issues"></tbody>
+    </table>
+  </div>
+
+  <script id="report-data" type="application/json">__REPORT_JSON__</script>
+  <script>
+    const payload = JSON.parse(document.getElementById("report-data").textContent);
+    const meta = document.getElementById("meta");
+    meta.textContent = `${payload.org}/${payload.project} • ${payload.window_start} -> ${payload.window_end} • query: ${payload.query}`;
+
+    document.getElementById("hero").textContent = payload.analysis?.hero_callout || "No analysis";
+
+    const rows = payload.top_issues || [];
+    const body = document.getElementById("issues");
+    body.innerHTML = rows.map((item) => `
+      <tr>
+        <td><code>${item.short_id}</code></td>
+        <td>${item.title}</td>
+        <td>${item.category}</td>
+        <td>${item.total_events}</td>
+        <td><a href="${item.permalink}" target="_blank" rel="noopener">Open</a></td>
+      </tr>
+    `).join("");
+  </script>
+</body>
+</html>
