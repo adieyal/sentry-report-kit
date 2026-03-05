@@ -1,6 +1,6 @@
 [project]
 name = "sentry-report-kit"
-version = "0.1.0"
+version = "0.2.0"
 description = "Generate and render Sentry issue report payloads"
 readme = "README.md"
 authors = [
